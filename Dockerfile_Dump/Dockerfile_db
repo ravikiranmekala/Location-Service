@@ -1,0 +1,14 @@
+# Use an official PostgreSQL image as the base image
+FROM postgres:alpine
+
+COPY .env .
+
+# Set environment variables for PostgreSQL
+ENV POSTGRES_USER=${DB_USER}
+ENV POSTGRES_PASSWORD=${DB_PASSWORD}
+ENV POSTGRES_DB=${DB_NAME}
+
+# Expose the PostgreSQL port
+EXPOSE 5432
+
+CMD ["postgres"]

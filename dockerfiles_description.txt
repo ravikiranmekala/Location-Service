@@ -1,0 +1,25 @@
+Dockerfile1 and docker-compose1.yml are a pair. You can run the project using docker compose up. You need to modify code in database.go at the location where environment variables are being used.
+> docker compose up
+
+Dockerfile is for building image of the project and then running the image. for this you need to first run a postgres container using docker-compose-db.yml file.
+
+# Use the Dockerfile and create an image named go-server
+> docker build -t go-server .
+
+# To run the image created
+> docker run -p 3000:3000 go-server 
+
+# To examine the contents of the image using bash.
+> docker run -it --entrypoint /bin/sh go-server 
+
+# To check all the images
+> docker images
+
+# To remove an image
+> docker rmi <image_id>
+
+# To remove all the dead containers
+> docker container rm $(docker container ls -aq)
+
+# To stop a container
+> docker stop

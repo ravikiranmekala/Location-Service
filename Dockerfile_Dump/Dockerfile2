@@ -1,0 +1,37 @@
+# Stage 1: Build the Go application
+FROM golang:1.19 AS builder
+
+WORKDIR /usr/src/app
+
+COPY ./go.mod ./go.sum ./
+
+RUN go mod download
+
+COPY . .
+
+COPY .env .
+
+# RUN go build -o /usr/src/app/main .
+
+RUN go build -o serverexec ./main.go
+
+# Stage 2: Build the final image
+FROM postgres:alpine
+
+WORKDIR /usr/src/app
+
+# Copy the built Go application from the builder stage
+COPY --from=builder /usr/src/app/serverexec .
+
+# Set environment variables for PostgreSQL
+ENV POSTGRES_USER=${DB_USER}
+ENV POSTGRES_PASSWORD=${DB_PASSWORD}
+ENV POSTGRES_DB=${DB_NAME}
+
+# Expose ports
+EXPOSE 3000
+EXPOSE 5432
+
+ENTRYPOINT [ "/usr/src/app/serverexec" ]
+
+# CMD [""]

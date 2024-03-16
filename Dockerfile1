@@ -1,0 +1,12 @@
+FROM golang:1.19.0
+
+workdir /usr/src/app
+
+# to Hot load the changes instead of rebuilding the image
+RUN go install github.com/cosmtrek/air@latest
+
+# copy all the files from host to the container
+COPY . .
+
+# to make sure all the dependencies are properly installed
+RUN go mod tidy 
